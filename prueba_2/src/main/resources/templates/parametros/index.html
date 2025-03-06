@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${titulo}">index</title>
+</head>
+
+<body>
+
+    <h1 th:text="${titulo}"></h1>
+
+    <ul>
+        <li>
+            <a th:href="@{/params/string(texto='Me fui')}">Despedida</a>
+        </li>
+        <li>
+            <a th:href="@{/params/mix-params(saludo='',num = 3)}">mensaje y numero</a>
+        </li>
+        <li>
+            <a th:href="@{/params/boolean(valor=true)}">Boolean</a>
+        </li>
+
+    </ul>
+
+</body>
+
+</html>

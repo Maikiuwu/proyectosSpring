@@ -1,0 +1,2 @@
+insert into Clientes (id, nombre, apellido, email, fecha) values (1, 'Juan', 'Perez', 'unvideo', '2020-01-01');
+insert into Clientes (id, nombre, apellido, email, fecha) values (2, 'Maria', 'Lopez', 'otrovideo', '2020-01-01');
