@@ -18,12 +18,12 @@
             </tr>
         </thead>
         <tbody>
-            <tr th:each="cliente:${Cliente}">
-                <td th:text="${Cliente.id}"></td>
-                <td th:text="${Cliente.nombre}"></td>
-                <td th:text="${Cliente.apellido}"></td>
-                <td th:text="${Cliente.email}"></td>
-                <td th:text="${Cliente.fecha}"></td>
+            <tr th:each="cliente:${Clientes}">
+                <td th:text="${cliente.id}"></td>
+                <td th:text="${cliente.nombre}"></td>
+                <td th:text="${cliente.apellido}"></td>
+                <td th:text="${cliente.email}"></td>
+                <td th:text="${cliente.fecha}"></td>
             </tr>
         </tbody>
     </table>

@@ -5,21 +5,20 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
-
-import com.example.proyecto_2.Model.Dao.IClienteDao;
+import com.example.proyecto_2.Model.Dao.IProductoDao;
 
 @Controller
-public class ClienteControlador {
+public class ProductoControlador {
 
     @Autowired
-    private IClienteDao clienteDao;
+    private IProductoDao ProductoDao;
 
-    @GetMapping("/listar")
+    @GetMapping("/Producto")
     public String listar(Model model){
 
-        model.addAttribute("titulo", "Listado de Clientes");
-        model.addAttribute("Clientes", clienteDao.findAll());
-        return "listar";
+        model.addAttribute("titulo", "Listado de Productos");
+        model.addAttribute("productos", ProductoDao.findAll());
+        return "Producto";
     }
     
 }
