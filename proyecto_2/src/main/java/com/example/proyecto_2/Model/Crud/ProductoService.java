@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.proyecto_2.Model.Entities.Producto;
-
+//falto
 @Service
 public class ProductoService implements ProductoCRUD{
 
