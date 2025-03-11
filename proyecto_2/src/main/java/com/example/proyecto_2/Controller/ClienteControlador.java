@@ -8,10 +8,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 import com.example.proyecto_2.Model.Dao.IClienteDao;
 
-@Controller
+@Controller //pq la clase es un controlador xd
 public class ClienteControlador {
 
-    @Autowired
+    @Autowired  // inyeccion de dependencias
     private IClienteDao clienteDao;
 
     @GetMapping("/listar")
