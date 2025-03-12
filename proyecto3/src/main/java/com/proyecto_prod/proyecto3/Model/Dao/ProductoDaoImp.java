@@ -11,7 +11,7 @@ import com.proyecto_prod.proyecto3.Model.Entities.Producto;
 @Service  //ayuda a organizar la logica de la aplicacion separandola en controladores y capas de acceso de datos
 public class ProductoDaoImp {
 
-    @Autowired       //
+    @Autowired       
     private IProductoDao productoDao;
 
     public List<Producto> findAll() {
