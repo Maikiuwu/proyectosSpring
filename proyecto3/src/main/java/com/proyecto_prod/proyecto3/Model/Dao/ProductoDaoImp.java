@@ -1,5 +1,6 @@
 package com.proyecto_prod.proyecto3.Model.Dao;
 
+
 import java.util.List;
 import java.util.Optional;
 
@@ -11,7 +12,7 @@ import com.proyecto_prod.proyecto3.Model.Entities.Producto;
 @Service  //ayuda a organizar la logica de la aplicacion separandola en controladores y capas de acceso de datos
 public class ProductoDaoImp {
 
-    @Autowired       //
+    @Autowired       
     private IProductoDao productoDao;
 
     public List<Producto> findAll() {
@@ -24,6 +25,7 @@ public class ProductoDaoImp {
     }
     
     public Producto save(Producto producto) {
+        
         Optional<Producto> existente = productoDao.findByNombre(producto.getNombre());
         if (existente.isPresent() && (producto.getId() == null || !existente.get().getId().equals(producto.getId()))) { //ispresent() basicamente solo ejeccuta la accion del optional si no esta vacio y se presenta algun dato
             
