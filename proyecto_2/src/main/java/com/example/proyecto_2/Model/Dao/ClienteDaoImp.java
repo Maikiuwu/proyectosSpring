@@ -1,26 +1,40 @@
 package com.example.proyecto_2.Model.Dao;
 
 import java.util.List;
+import java.util.Optional;
 
-import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
-
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.example.proyecto_2.Model.Entities.Cliente;
 
-@Repository
-public class ClienteDaoImp implements IClienteDao{
+@Service
+public class ClienteDaoImp{
+    
+    @Autowired       
+    private IClienteDao clienteDao;
 
-    @PersistenceContext
-    private EntityManager em;
+    public List<Cliente> findAll() {
+        return (List<Cliente>) clienteDao.findAll();
+    }
 
-    @SuppressWarnings("unchecked")
-    @Transactional(readOnly = true)
-    @Override
-    public List<Cliente> findAll(){
-        return em.createQuery("from Cliente").getResultList();
+    public Cliente findOne(Long id) {
+        Optional<Cliente> opt = clienteDao.findById(id);
+        return opt.orElse(null);
+    }
+    
+    public Cliente save(Cliente cliente) {
+        
+        Optional<Cliente> existente = clienteDao.findByNombre(cliente.getNombre());
+        if (existente.isPresent() && (cliente.getId() == null || !existente.get().getId().equals(cliente.getId()))) { //ispresent() basicamente solo ejeccuta la accion del optional si no esta vacio y se presenta algun dato
+            
+            throw new IllegalArgumentException("Ya existe un producto con el nombre: " + cliente.getNombre());
+        }   
+        return clienteDao.save(cliente);
+    }
+
+    public void delete(Long id) {
+        clienteDao.deleteById(id);
     }
     
 }
