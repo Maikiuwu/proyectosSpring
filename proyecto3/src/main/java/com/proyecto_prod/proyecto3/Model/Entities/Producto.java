@@ -3,7 +3,6 @@ package com.proyecto_prod.proyecto3.Model.Entities;
 import java.io.Serializable;
 import java.sql.Date;
 
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -11,7 +10,8 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
-
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 
 @Entity
 public class Producto implements Serializable {
@@ -22,7 +22,10 @@ public class Producto implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(unique = true) // también se puede aquí
+    @NotNull(message = "El nombre no puede estar vacío.")
+    @Pattern(regexp = "^[A-Za-zÁÉÍÓÚáéíóúñÑ ]{3,50}$", 
+             message = "El nombre debe tener entre 3 y 50 caracteres y solo puede contener letras y espacios.")
+    @Column(unique = true)
     private String nombre;
     
     private int cantidad;
@@ -86,7 +89,7 @@ public class Producto implements Serializable {
 
     @Override
     public String toString() {
-        return "Producto [id=" + id + ", nombre=" + nombre + ", cantidad=" + cantidad + ", precio_venta=" + precio_venta
-                + ", fecha=" + fecha + "]";
+        return "Producto [id=" + id + ", nombre=" + nombre + ", cantidad=" + cantidad + ", precio_venta=" 
+                + precio_venta + ", fecha=" + fecha + "]";
     }
 }
