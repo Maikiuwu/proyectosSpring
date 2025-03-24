@@ -17,10 +17,10 @@ public class ProductoControlador {
     @Autowired
     private ProductoDaoImp productoDaoImp;
 
-    @GetMapping("/listar")
+    @GetMapping("/productos")
     public String listar(Model model) {
         model.addAttribute("productos", productoDaoImp.findAll());
-        return "listar";
+        return "productos";
     }
 
     @GetMapping("/form")
@@ -39,7 +39,7 @@ public class ProductoControlador {
             flash.addFlashAttribute("error", e.getMessage());
             return "redirect:/producto/form";
         }
-        return "redirect:/producto/listar";
+        return "redirect:/producto/productos";
     }
 
     @GetMapping("/form/{id}")
@@ -47,7 +47,7 @@ public class ProductoControlador {
         Producto producto = productoDaoImp.findOne(id);
         if (producto == null) {
             flash.addFlashAttribute("error", "El producto no existe");
-            return "redirect:/producto/listar";
+            return "redirect:/producto/productos";
         }
         model.addAttribute("producto", producto);
         return "form";
@@ -57,6 +57,6 @@ public class ProductoControlador {
     public String eliminar(@PathVariable Long id, RedirectAttributes flash) {
         productoDaoImp.delete(id);
         flash.addFlashAttribute("success", "Producto eliminado con éxito"); //flash.addFlashAttribute, permite enviar mensajes entre controladores y vistas por http, model dura solo por una pantalla y en otra nueva pierde los datos
-        return "redirect:/producto/listar";
+        return "redirect:/producto/productos";
     }
 }
