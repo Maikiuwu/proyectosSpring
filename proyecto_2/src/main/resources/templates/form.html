@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Formulario de Producto</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body>
+    <div class="container mt-4">
+        <div class="card"></div>
+        <h1 class="text-primary">Formulario de Producto</h1>
+        <div class="alert alert-danger" th:if="${error}" style="color: red;" th:text="${error}"></div>
+        <div class="alert alert-danger" th:if="${success}" style="color: green;" th:text="${success}"></div>
+
+
+        <form th:action="@{/producto/form}" th:object="${producto}" method="post" >
+            <input type="hidden" th:field="*{id}" />
+
+            <div class="form-floating mb-3">
+                <input placeholder="Nombre" class="form-control" id="nombre" type="text" th:field="*{nombre}" required/><br />
+                <label for="nombre">Nombre</label>
+            </div>
+
+            <div class="form-floating mb-3">
+                <input placeholder="Cantidad" class="form-control" id="cantidad" type="number"
+                    th:field="*{cantidad}" required/><br />
+                <label for="cantidad">Cantidad</label>
+            </div>
+
+            <div class="form-floating mb-3">
+                <input placeholder="Precio de venta" class="form-control" id="precio_venta" type="number" step="0.01"
+                    th:field="*{precio_venta}" required/><br />
+                <label for="precio_venta">Precio de Venta</label>
+            </div>
+
+
+            <div class="form-floating mb-3">
+                <input placeholder="Fecha" class="form-control" id="fecha" type="date" th:field="*{fecha}" required/><br />
+                <label for="fecha">Fecha</label>
+              
+            </div>
+            <button class="btn btn-primary" type="submit">Guardar</button>
+            <a th:href="@{/producto/listar}" class="btn btn-danger ">Cancelar</a>
+        </form>
+    </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    
+</body>
+
+</html>
