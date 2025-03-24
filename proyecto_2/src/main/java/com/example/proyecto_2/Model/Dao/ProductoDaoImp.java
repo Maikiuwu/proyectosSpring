@@ -34,8 +34,6 @@ public class ProductoDaoImp {
         return productoDao.save(producto);
     }
 
-    
-
     public void delete(Long id) {
         productoDao.deleteById(id);
     }
