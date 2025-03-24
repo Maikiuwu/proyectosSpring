@@ -82,9 +82,4 @@ public class Producto implements Serializable {
         this.fecha = fecha;
     }
 
-    @Override
-    public String toString() {
-        return "Producto [id=" + id + ", nombre=" + nombre + ", cantidad=" + cantidad + ", precio_venta=" + precio_venta
-                + ", fecha=" + fecha + "]";
-    }
 }
