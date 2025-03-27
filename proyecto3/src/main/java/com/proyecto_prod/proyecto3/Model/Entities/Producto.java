@@ -1,52 +1,33 @@
 package com.proyecto_prod.proyecto3.Model.Entities;
 
-import java.io.Serializable;
-import java.sql.Date;
-
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Temporal;
-import jakarta.persistence.TemporalType;
-import jakarta.validation.constraints.NotNull;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Positive;
 
 @Entity
-public class Producto implements Serializable {
-
-    private static final long serialVersionUID = 1L;
+@Table(name = "productos")
+public class Producto {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotNull(message = "El nombre no puede estar vacío.")
-    @Pattern(regexp = "^[A-Za-zÁÉÍÓÚáéíóúñÑ ]{3,50}$", 
-             message = "El nombre debe tener entre 3 y 50 caracteres y solo puede contener letras y espacios.")
-    @Column(unique = true)
+    @NotBlank(message = "El nombre no puede estar vacío")
+    @Pattern(regexp = "^[A-Za-z\\s]+$", message = "El nombre solo puede contener letras y espacios")
     private String nombre;
-    
-    private int cantidad;
-    private float precio_venta;
-    
-    @Column(name = "Fecha")
-    @Temporal(TemporalType.DATE)
-    private Date fecha;
+
+    @Positive(message = "El precio debe ser un número positivo")
+    private double precio;
 
     public Producto() {
     }
 
-    public Producto(Long id, String nombre, int cantidad, float precio_venta, Date fecha) {
-        this.id = id;
+    public Producto(String nombre, double precio) {
         this.nombre = nombre;
-        this.cantidad = cantidad;
-        this.precio_venta = precio_venta;
-        this.fecha = fecha;
+        this.precio = precio;
     }
 
-    // Getters y Setters
     public Long getId() {
         return id;
     }
@@ -63,33 +44,11 @@ public class Producto implements Serializable {
         this.nombre = nombre;
     }
 
-    public int getCantidad() {
-        return cantidad;
+    public double getPrecio() {
+        return precio;
     }
 
-    public void setCantidad(int cantidad) {
-        this.cantidad = cantidad;
-    }
-
-    public float getPrecio_venta() {
-        return precio_venta;
-    }
-
-    public void setPrecio_venta(float precio_venta) {
-        this.precio_venta = precio_venta;
-    }
-
-    public Date getFecha() {
-        return fecha;
-    }
-
-    public void setFecha(Date fecha) {
-        this.fecha = fecha;
-    }
-
-    @Override
-    public String toString() {
-        return "Producto [id=" + id + ", nombre=" + nombre + ", cantidad=" + cantidad + ", precio_venta=" 
-                + precio_venta + ", fecha=" + fecha + "]";
+    public void setPrecio(double precio) {
+        this.precio = precio;
     }
 }

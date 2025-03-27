@@ -1,6 +1,5 @@
 package com.proyecto_prod.proyecto3.Model.Dao;
 
-
 import java.util.List;
 import java.util.Optional;
 
@@ -9,7 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.proyecto_prod.proyecto3.Model.Entities.Producto;
 
-@Service  //ayuda a organizar la logica de la aplicacion separandola en controladores y capas de acceso de datos
+@Service  // ayuda a organizar la lógica de la aplicación separándola en controladores y capas de acceso de datos
 public class ProductoDaoImp {
 
     @Autowired       
@@ -27,18 +26,13 @@ public class ProductoDaoImp {
     public Producto save(Producto producto) {
         
         Optional<Producto> existente = productoDao.findByNombre(producto.getNombre());
-        if (existente.isPresent() && (producto.getId() == null || !existente.get().getId().equals(producto.getId()))) { //ispresent() basicamente solo ejeccuta la accion del optional si no esta vacio y se presenta algun dato
-            
+        if (existente.isPresent() && (producto.getId() == null || !existente.get().getId().equals(producto.getId()))) { // isPresent() básicamente solo ejecuta la acción del Optional si no está vacío y se presenta algún dato
             throw new IllegalArgumentException("Ya existe un producto con el nombre: " + producto.getNombre());
         }   
         return productoDao.save(producto);
     }
 
-    
-
     public void delete(Long id) {
         productoDao.deleteById(id);
     }
-
-
 }
