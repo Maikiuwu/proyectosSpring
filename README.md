@@ -21,7 +21,7 @@ float subtotal;
 
 
 
-
+th:field="*{id}" th:field="*{nombre}" th:field="*{apellido}" th:field="*{correo}" th:field="*{fecha}"
 
 
 
