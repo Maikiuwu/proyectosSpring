@@ -6,18 +6,18 @@ compra
 un txt 
 compra tiene clases
 encabezado tiene:
--Id compra
--id cliente
--fecha
--descuento Total
--Total
+Long Id_compra;
+Long id_cliente;
+Date fecha;
+float descuento_Total;
+float Total;
 detalles tiene:
--Id
--Id encabezado
--descuento
--id producto
--cantidad
--subtotal
+Long Id_detalles;
+Long Id_encabezado;
+float descuento;
+Long id_producto;
+int cantidad;
+float subtotal;
 
 
 
