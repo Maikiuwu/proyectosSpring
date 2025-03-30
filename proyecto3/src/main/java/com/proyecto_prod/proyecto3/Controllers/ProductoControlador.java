@@ -3,8 +3,12 @@ package com.proyecto_prod.proyecto3.Controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import com.proyecto_prod.proyecto3.Model.Entities.Producto;
+
+import jakarta.validation.Valid;
+
 import com.proyecto_prod.proyecto3.Model.Dao.ProductoDaoImp;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -28,9 +32,9 @@ public class ProductoControlador {
         model.addAttribute("producto", new Producto());
         return "form"; 
     }
-
+/* 
     @PostMapping("/form")
-    public String guardar(Producto producto, RedirectAttributes flash) {
+    public String guardar(@Valid Producto producto, RedirectAttributes flash) {
         try {
             productoDaoImp.save(producto);
             flash.addFlashAttribute("success", "Producto guardado con éxito!"); 
@@ -40,7 +44,25 @@ public class ProductoControlador {
             return "redirect:/producto/form";
         }
         return "redirect:/producto/listar";
+    }*/
+
+@PostMapping("/form")
+public String guardar(@Valid Producto producto, BindingResult result, RedirectAttributes flash) {
+    if (result.hasErrors()) {
+        return "form";  // Se retorna al formulario mostrando los errores
     }
+    try {
+        productoDaoImp.save(producto);
+        flash.addFlashAttribute("success", "Producto guardado con éxito!");
+    } catch (IllegalArgumentException e) {
+        flash.addFlashAttribute("error", e.getMessage());
+        return "redirect:/producto/form";
+    }
+    return "redirect:/producto/listar";
+}
+
+
+    
 
     @GetMapping("/form/{id}")
     public String editar(@PathVariable Long id, Model model, RedirectAttributes flash) {

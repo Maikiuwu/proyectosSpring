@@ -10,6 +10,8 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 
 @Entity
 public class Producto implements Serializable {
@@ -20,11 +22,14 @@ public class Producto implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(unique = true) // también se puede aquí
+    @NotNull(message = "El nombre no puede estar vacío.")
+    @Pattern(regexp = "^[A-Za-zÁÉÍÓÚáéíóúñÑ ]{3,50}$", 
+             message = "El nombre debe tener entre 3 y 50 caracteres y solo puede contener letras y espacios.")
+    @Column(unique = true)
     private String nombre;
     
-    private String cantidad;
-    private String precio_venta;
+    private int cantidad;
+    private float precio_venta;
     
     @Column(name = "Fecha")
     @Temporal(TemporalType.DATE)
@@ -33,7 +38,7 @@ public class Producto implements Serializable {
     public Producto() {
     }
 
-    public Producto(Long id, String nombre, String cantidad, String precio_venta, Date fecha) {
+    public Producto(Long id, String nombre, int cantidad, float precio_venta, Date fecha) {
         this.id = id;
         this.nombre = nombre;
         this.cantidad = cantidad;
@@ -58,19 +63,19 @@ public class Producto implements Serializable {
         this.nombre = nombre;
     }
 
-    public String getCantidad() {
+    public int getCantidad() {
         return cantidad;
     }
 
-    public void setCantidad(String cantidad) {
+    public void setCantidad(int cantidad) {
         this.cantidad = cantidad;
     }
 
-    public String getPrecio_venta() {
+    public float getPrecio_venta() {
         return precio_venta;
     }
 
-    public void setPrecio_venta(String precio_venta) {
+    public void setPrecio_venta(float precio_venta) {
         this.precio_venta = precio_venta;
     }
 
@@ -82,4 +87,10 @@ public class Producto implements Serializable {
         this.fecha = fecha;
     }
 
+    @Override
+    public String toString() {
+        return "Producto [id=" + id + ", nombre=" + nombre + ", cantidad=" + cantidad + ", precio_venta=" 
+                + precio_venta + ", fecha=" + fecha + "]";
+    }
 }
+
