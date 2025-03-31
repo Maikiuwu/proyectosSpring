@@ -32,39 +32,28 @@ public class ProductoControlador {
         model.addAttribute("producto", new Producto());
         return "form"; 
     }
-/* 
+
+
     @PostMapping("/form")
-    public String guardar(@Valid Producto producto, RedirectAttributes flash) {
+    public String guardar(@Valid Producto producto, BindingResult result, Model model, RedirectAttributes flash) {
+        if (result.hasErrors()) {
+            model.addAttribute("titulo", "Formulario de Producto");
+            return "form";
+        }
+    
         try {
             productoDaoImp.save(producto);
-            flash.addFlashAttribute("success", "Producto guardado con éxito!"); 
+            flash.addFlashAttribute("success", "Producto agregado correctamente!");
+            return "redirect:/producto/form";
         } catch (IllegalArgumentException e) {
-            // Si llega aquí, significa que hay un nombre duplicado
             flash.addFlashAttribute("error", e.getMessage());
             return "redirect:/producto/form";
         }
-        return "redirect:/producto/listar";
-    }*/
-
-@PostMapping("/form")
-public String guardar(@Valid Producto producto, BindingResult result, RedirectAttributes flash) {
-    if (result.hasErrors()) {
-        return "form";  // Se retorna al formulario mostrando los errores
     }
-    try {
-        productoDaoImp.save(producto);
-        flash.addFlashAttribute("success", "Producto guardado con éxito!");
-    } catch (IllegalArgumentException e) {
-        flash.addFlashAttribute("error", e.getMessage());
-        return "redirect:/producto/form";
-    }
-    return "redirect:/producto/listar";
-}
-
-
+    
     
 
-    @GetMapping("/form/{id}")
+    @GetMapping("/home/{id}")
     public String editar(@PathVariable Long id, Model model, RedirectAttributes flash) {
         Producto producto = productoDaoImp.findOne(id);
         if (producto == null) {
