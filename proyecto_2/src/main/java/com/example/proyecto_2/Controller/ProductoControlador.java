@@ -59,4 +59,22 @@ public class ProductoControlador {
         flash.addFlashAttribute("success", "Producto eliminado con éxito"); //flash.addFlashAttribute, permite enviar mensajes entre controladores y vistas por http, model dura solo por una pantalla y en otra nueva pierde los datos
         return "redirect:/producto/productos";
     }
+
+    @GetMapping("/catalogo")
+    public String listar_compra(Model model) {
+        model.addAttribute("productos", productoDaoImp.findAll());
+        return "catalogo";
+    }
+    
+    @GetMapping("/form_compra/{id}")
+    public String comprar(@PathVariable Long id, Model model, RedirectAttributes flash) {
+        Producto producto = productoDaoImp.findOne(id);
+        if (producto == null) {
+            flash.addFlashAttribute("error", "El producto no existe");
+            return "redirect:/producto/productos";
+        }
+        model.addAttribute("producto", producto);
+        return "form_compra";
+    }
+
 }
