@@ -53,7 +53,7 @@ public class ProductoControlador {
     
     
 
-    @GetMapping("/form/{id}")
+    @GetMapping("/home/{id}")
     public String editar(@PathVariable Long id, Model model, RedirectAttributes flash) {
         Producto producto = productoDaoImp.findOne(id);
         if (producto == null) {
