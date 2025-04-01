@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Formulario de Registro</title>
+</head>
+<body>
+    <!-- Mostrar mensajes de éxito o error -->
+    <div th:if="${success}" style="color: green; font-weight: bold;">
+        <p th:text="${success}"></p>
+    </div>
+    <div th:if="${error}" style="color: red; font-weight: bold;">
+        <p th:text="${error}"></p>
+    </div>
+
+    <form th:action="@{/cliente/registro}" th:object="${cliente}" method="post">
+        <label>Nombre:</label>
+        <input type="text" th:field="*{nombre}">
+        <div th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}" style="color: red;"></div>
+        
+        <label>Email:</label>
+        <input type="text" th:field="*{email}">
+        <div th:if="${#fields.hasErrors('email')}" th:errors="*{email}" style="color: red;"></div>
+        
+        <label>Contraseña:</label>
+        <input type="password" th:field="*{password}">
+        <div th:if="${#fields.hasErrors('password')}" th:errors="*{password}" style="color: red;"></div>
+        
+        <button type="submit">Registrar</button>
+    </form>
+
+    <a href="/cliente/login">Ya tengo cuenta</a>
+    
+    
+</body>
+</html>
