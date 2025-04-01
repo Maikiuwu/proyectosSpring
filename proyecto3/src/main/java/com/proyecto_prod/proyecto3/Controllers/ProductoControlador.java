@@ -33,35 +33,46 @@ public class ProductoControlador {
     return "listar";
 }
 
-    @GetMapping("/form")
-    public String crear(Model model) {
+    @GetMapping("/form/{id}")
+    public String crear(@PathVariable Long id, Model model) {
         model.addAttribute("producto", new Producto());
+        model.addAttribute("clienteId", id); // Pass client ID to view
+    
         return "form"; 
     }
 
 
     @PostMapping("/form")
-    public String guardar(@Valid Producto producto, BindingResult result, Model model, RedirectAttributes flash) {
+    public String guardar(@Valid Producto producto, BindingResult result, 
+                          @RequestParam("clienteId") Long clienteId, 
+                          Model model, RedirectAttributes flash) {
         if (result.hasErrors()) {
             model.addAttribute("titulo", "Formulario de Producto");
+            model.addAttribute("clienteId", clienteId); // Pass the clientId back to the form
             return "form";
         }
-    
+       
         try {
+            // Set the client ID to the product before saving
+            producto.setId_vendedor(clienteId);
+            
             productoDaoImp.save(producto);
             flash.addFlashAttribute("success", "Producto agregado correctamente!");
-            return "redirect:/producto/form";
+            return "redirect:/producto/listar/" + clienteId; // Redirect to the client's product list
         } catch (IllegalArgumentException e) {
             flash.addFlashAttribute("error", e.getMessage());
-            return "redirect:/producto/form";
+            model.addAttribute("clienteId", clienteId); // Pass the clientId back to the form
+            return "redirect:/producto/form/" + clienteId;
         }
     }
     
     
 
-    @GetMapping("/home/{id}")
+    @GetMapping("/editar/{id}")
     public String editar(@PathVariable Long id, Model model, RedirectAttributes flash) {
         Producto producto = productoDaoImp.findOne(id);
+  
+
         if (producto == null) {
             flash.addFlashAttribute("error", "El producto no existe");
             return "redirect:/producto/listar";

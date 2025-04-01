@@ -24,8 +24,7 @@ public class ClienteController {
     }
 
     @PostMapping("/login")
-    public String procesarLogin(@RequestParam String email, @RequestParam String password, 
-                              RedirectAttributes flash) {
+    public String procesarLogin(@RequestParam String email, @RequestParam String password , RedirectAttributes flash) {
         // Buscar cliente por email
         Cliente cliente = clienteDao.findByEmail(email);
         
@@ -47,8 +46,8 @@ public class ClienteController {
     }
 
     @PostMapping("/registro")
-    public String procesarRegistro(@Valid Cliente cliente, BindingResult result, 
-                                 Model model, RedirectAttributes flash) {
+    public String procesarRegistro(@Valid Cliente cliente, BindingResult result, Model model, RedirectAttributes flash) {
+        
         if (result.hasErrors()) {
             return "registro";
         }

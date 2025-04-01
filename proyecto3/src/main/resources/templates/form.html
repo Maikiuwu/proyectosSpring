@@ -23,10 +23,12 @@
     <input type="number" th:field="*{precio}" step="0.01">
     <div th:if="${#fields.hasErrors('precio')}" th:errors="*{precio}" style="color: red;"></div>
 
+    <input type="hidden" name="clienteId" th:value="${clienteId}">
+
     <button type="submit">Guardar</button>
 </form>
 
-<a href="/producto/listar">Volver</a>
+<a th:href="@{/producto/listar/{id}(id=${clienteId})}">Volver</a>
 
 </body>
 </html>

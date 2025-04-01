@@ -26,14 +26,18 @@ public class Cliente {
     @Pattern(regexp = "^.{6,}$", message = "La contraseña debe tener al menos 6 caracteres")
     private String password;
 
+    @NotBlank(message = "Tiene que seleccionar un rol")
+    private String rol;
+
     // Constructores
     public Cliente() {
     }
 
-    public Cliente(String nombre, String email, String password) {
+    public Cliente(String nombre, String email, String password, String rol) {
         this.nombre = nombre;
         this.email = email;
         this.password = password;
+        this.rol = rol; // Rol por defecto
     }
 
     // Getters y Setters
@@ -68,4 +72,15 @@ public class Cliente {
     public void setPassword(String password) {
         this.password = password;
     }
+
+    public String getRol() {
+        return rol;
+    }
+
+    public void setRol(String rol) {
+        this.rol = rol;
+    }
+
+    
+    
 }

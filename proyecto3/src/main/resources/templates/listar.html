@@ -5,22 +5,24 @@
 </head>
 <body>
     <h1>Lista de Productos</h1>
-    <a href="/producto/form">Nuevo Producto</a>
+    <a th:href="@{/producto/form/{id}(id=${clienteId})}">Nuevo Producto</a>
     <table border="1">
         <tr>
             <th>ID</th>
             <th>Nombre</th>
             <th>Precio</th>
             <th>Acciones</th>
+            <th>nombre vendedor</th>
         </tr>
         <tr th:each="producto : ${productos}">
             <td th:text="${producto.id}"></td>
             <td th:text="${producto.nombre}"></td>
             <td th:text="${producto.precio}"></td>
             <td>
-                <a th:href="@{/producto/home/{id}(id=${producto.id})}">Editar</a>
+                <a th:href="@{/producto/editar/{id}(id=${producto.id})}">Editar</a>
                 <a th:href="@{/producto/eliminar/{id}(id=${producto.id})}" onclick="return confirm('¿Seguro que desea eliminar?')">Eliminar</a>
             </td>
+            <td th:text="${producto.id_vendedor}"></td>
         </tr>
     </table>
 </body>
