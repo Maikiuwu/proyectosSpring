@@ -4,29 +4,35 @@
     <title>Formulario de Producto</title>
 </head>
 <body>
-    <!-- Mostrar mensajes de éxito o error -->
-<div th:if="${success}" style="color: green; font-weight: bold;">
-    <p th:text="${success}"></p>
-</div>
-<div th:if="${error}" style="color: red; font-weight: bold;">
-    <p th:text="${error}"></p>
-</div>
-
-<form th:action="@{/producto/form}" th:object="${producto}" method="post">
-    <input type="hidden" th:field="*{id}">
+    <!-- Show success/error messages -->
+    <div th:if="${success != null}" th:text="${success}" style="color: green; font-weight: bold;"></div>
+    <div th:if="${error != null}" th:text="${error}" style="color: red; font-weight: bold;"></div>
     
-    <label>Nombre:</label>
-    <input type="text" th:field="*{nombre}">
-    <div th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}" style="color: red;"></div>
+    <form th:action="@{/producto/form}" th:object="${producto}" method="post">
+        <input type="hidden" th:field="*{id}">
+        <input type="hidden" name="clienteId" th:value="${clienteId}">
+        
+        <div>
+            <label>Nombre:</label>
+            <input type="text" th:field="*{nombre}">
+            <div th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}" style="color: red;"></div>
+        </div>
+        
+        <div>
+            <label>Precio:</label>
+            <input type="number" th:field="*{precio}" step="0.01">
+            <div th:if="${#fields.hasErrors('precio')}" th:errors="*{precio}" style="color: red;"></div>
+        </div>
 
-    <label>Precio:</label>
-    <input type="number" th:field="*{precio}" step="0.01">
-    <div th:if="${#fields.hasErrors('precio')}" th:errors="*{precio}" style="color: red;"></div>
-
-    <button type="submit">Guardar</button>
-</form>
-
-<a href="/producto/listar">Volver</a>
-
+        <div>
+            <label>Cantidad:</label>
+            <input type="number" th:field="*{cantidad}" step="0.01">
+            <div th:if="${#fields.hasErrors('cantidad')}" th:errors="*{precio}" style="color: red;"></div>
+        </div>
+        
+        <button type="submit">Guardar</button>
+    </form>
+    
+    <a th:href="@{/producto/listar/{id}(id=${clienteId})}">Volver</a>
 </body>
 </html>

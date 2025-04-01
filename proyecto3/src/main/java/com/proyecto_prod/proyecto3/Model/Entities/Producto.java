@@ -20,12 +20,34 @@ public class Producto {
     @Positive(message = "El precio debe ser un número positivo")
     private double precio;
 
+    private Long id_vendedor;
+
+    private String cantidad;
+
     public Producto() {
     } 
 
-    public Producto(String nombre, double precio) {
+    public Producto(String nombre, double precio, Long id_vendedor, String cantidad) {
         this.nombre = nombre;
         this.precio = precio;
+        this.id_vendedor = id_vendedor;
+        this.cantidad = cantidad;
+    }
+
+    public String getCantidad() {
+        return cantidad;
+    }
+
+    public void setCantidad(String cantidad) {
+        this.cantidad = cantidad;
+    }
+
+    public Long getId_vendedor() {
+        return id_vendedor;
+    }
+
+    public void setId_vendedor(Long id_vendedor) {
+        this.id_vendedor = id_vendedor;
     }
 
     public Long getId() {

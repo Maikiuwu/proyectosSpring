@@ -1,38 +1,52 @@
 package com.proyecto_prod.proyecto3.Model.Dao;
 
-import java.util.List;
-import java.util.Optional;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import com.proyecto_prod.proyecto3.Model.Entities.Producto;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
-@Service  // ayuda a organizar la lógica de la aplicación separándola en controladores y capas de acceso de datos
-public class ProductoDaoImp {
+import java.util.List;
 
-    @Autowired       
-    private IProductoDao productoDao;
+@Repository
+public class ProductoDaoImp implements IProductoDao {
+    @PersistenceContext
+    private EntityManager entityManager;
 
+    @Override
+    @Transactional(readOnly = true)
     public List<Producto> findAll() {
-        return (List<Producto>) productoDao.findAll();
+        return entityManager.createQuery("from Producto", Producto.class).getResultList();
     }
 
+    @Override
+    @Transactional(readOnly = true)
     public Producto findOne(Long id) {
-        Optional<Producto> opt = productoDao.findById(id);
-        return opt.orElse(null);
+        return entityManager.find(Producto.class, id);
+    }
+
+    @Override
+    @Transactional
+    public void save(Producto producto) {
+        if (producto.getId() != null && producto.getId() > 0) {
+            entityManager.merge(producto);
+        } else {
+            entityManager.persist(producto);
+        }
+    }
+
+    @Override
+    @Transactional
+    public void delete(Long id) {
+        entityManager.remove(findOne(id));
     }
     
-    public Producto save(Producto producto) {
-        
-        Optional<Producto> existente = productoDao.findByNombre(producto.getNombre());
-        if (existente.isPresent() && (producto.getId() == null || !existente.get().getId().equals(producto.getId()))) { // isPresent() básicamente solo ejecuta la acción del Optional si no está vacío y se presenta algún dato
-            throw new IllegalArgumentException("Ya existe un producto con el nombre: " + producto.getNombre());
-        }   
-        return productoDao.save(producto);
-    }
-
-    public void delete(Long id) {
-        productoDao.deleteById(id);
+    @Transactional(readOnly = true)
+    public List<Producto> findByVendorId(Long vendorId) {
+        return entityManager.createQuery(
+            "SELECT p FROM Producto p WHERE p.id_vendedor = :vendorId",
+            Producto.class)
+            .setParameter("vendorId", vendorId)
+            .getResultList();
     }
 }
