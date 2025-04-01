@@ -5,25 +5,51 @@
 </head>
 <body>
     <h1>Lista de Productos</h1>
-    <a th:href="@{/producto/form/{id}(id=${clienteId})}">Nuevo Producto</a>
+    
+    <!-- Only show "New Product" button for providers -->
+    <div th:if="${isProveedor}">
+        <a th:href="@{/producto/form/{id}(id=${clienteId})}">Nuevo Producto</a>
+        
+    </div>
+    
+    <p th:text="'Usuario actual: ' + ${clientNames.get(clienteId)} + ' (' + ${rol} + ')'"></p>
+    
     <table border="1">
         <tr>
             <th>ID</th>
             <th>Nombre</th>
             <th>Precio</th>
-            <th>Acciones</th>
-            <th>nombre vendedor</th>
+            <th >Acciones</th> <!--th:if="${isProveedor}"-->
+            <th>Nombre vendedor</th>
+            <th>Cantidad</th>
+
         </tr>
         <tr th:each="producto : ${productos}">
             <td th:text="${producto.id}"></td>
             <td th:text="${producto.nombre}"></td>
             <td th:text="${producto.precio}"></td>
-            <td>
-                <a th:href="@{/producto/editar/{id}(id=${producto.id})}">Editar</a>
-                <a th:href="@{/producto/eliminar/{id}(id=${producto.id})}" onclick="return confirm('¿Seguro que desea eliminar?')">Eliminar</a>
+            <!-- Only show edit/delete for providers and only for their products -->
+            <td th:if="${isProveedor}">
+                <a th:href="@{/producto/editar/{id}(id=${producto.id}, clienteId=${clienteId})}">Editar</a>
+                <a th:href="@{/producto/eliminar/{id}(id=${producto.id}, clienteId=${clienteId})}" 
+                   onclick="return confirm('¿Seguro que desea eliminar?')">Eliminar</a>
             </td>
-            <td th:text="${producto.id_vendedor}"></td>
+
+            <td th:if="${!isProveedor}">
+                
+                <a 
+                   onclick="return confirm('¿Seguro que desea comprar?')">Agregar</a><!--@{/producto/agregar/{id}(id=${producto.id}, clienteId=${clienteId})}-->
+            </td>
+
+
+            <td th:text="${clientNames.get(producto.id_vendedor)}"></td>
+            <td th:text="${producto.Cantidad}"></td>
         </tr>
     </table>
+    
+    <div th:if="${success != null}" th:text="${success}" style="color: green; font-weight: bold;"></div>
+    <div th:if="${error != null}" th:text="${error}" style="color: red; font-weight: bold;"></div>
+    
+    <a th:href="@{/}">Volver al inicio</a>
 </body>
 </html>

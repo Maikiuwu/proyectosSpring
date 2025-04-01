@@ -22,13 +22,24 @@ public class Producto {
 
     private Long id_vendedor;
 
+    private String cantidad;
+
     public Producto() {
     } 
 
-    public Producto(String nombre, double precio, Long id_vendedor) {
+    public Producto(String nombre, double precio, Long id_vendedor, String cantidad) {
         this.nombre = nombre;
         this.precio = precio;
         this.id_vendedor = id_vendedor;
+        this.cantidad = cantidad;
+    }
+
+    public String getCantidad() {
+        return cantidad;
+    }
+
+    public void setCantidad(String cantidad) {
+        this.cantidad = cantidad;
     }
 
     public Long getId_vendedor() {
