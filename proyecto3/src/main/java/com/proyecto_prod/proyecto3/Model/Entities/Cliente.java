@@ -1,41 +1,42 @@
 package com.proyecto_prod.proyecto3.Model.Entities;
 
-import java.sql.Date;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Temporal;
-import jakarta.persistence.TemporalType;
-
+@Entity
+@Table(name = "clientes")
 public class Cliente {
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @NotBlank(message = "El nombre no puede estar vacío")
+    @Pattern(regexp = "^[A-Za-z\\s]+$", message = "El nombre solo puede contener letras y espacios")
     private String nombre;
-    private String apellido;
-    private String correo;
 
-    @Column(name = "Fecha")
-    @Temporal(TemporalType.DATE)
-    private Date Fecha;
+    @NotBlank(message = "El email no puede estar vacío")
+    @Email(message = "El formato del email no es válido")
+    @Column(unique = true)
+    private String email;
 
+    @NotBlank(message = "La contraseña no puede estar vacía")
+    @Pattern(regexp = "^.{6,}$", message = "La contraseña debe tener al menos 6 caracteres")
+    private String password;
+
+    // Constructores
     public Cliente() {
-
     }
 
-    public Cliente(Long id, String nombre, String apellido, String correo, Date Fecha) {
-
+    public Cliente(String nombre, String email, String password) {
         this.nombre = nombre;
-        this.apellido = apellido;
-        this.id = id;
-        this.correo = correo;
-        this.Fecha = Fecha;
-
+        this.email = email;
+        this.password = password;
     }
 
+    // Getters y Setters
     public Long getId() {
         return id;
     }
@@ -52,42 +53,19 @@ public class Cliente {
         this.nombre = nombre;
     }
 
-    public String getApellido() {
-        return apellido;
+    public String getEmail() {
+        return email;
     }
 
-    public void setApellido(String apellido) {
-        this.apellido = apellido;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
-    public String getCorreo() {
-        return correo;
+    public String getPassword() {
+        return password;
     }
 
-    public void setCorreo(String email) {
-        this.correo = email;
+    public void setPassword(String password) {
+        this.password = password;
     }
-
-    public Date getFecha() {
-        return Fecha;
-    }
-
-    public void setFecha(Date Fecha) {
-        this.Fecha = Fecha;
-    }
-
-    /*
-     * public static Long getSerialVersionUID(){
-     * return SerialVersionUID;
-     * }
-     */
-
-    @Override
-    public String toString() {
-        return "Cliente [id=" + id + ", nombre=" + nombre + ", apellido=" + apellido + ", correo=" + correo + ", fecha="
-                + Fecha + "]";
-    }
-
 }
-
-
