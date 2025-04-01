@@ -20,12 +20,18 @@ public class ProductoControlador {
 
     @Autowired
     private ProductoDaoImp productoDaoImp;
-
+/* 
     @GetMapping("/listar")
     public String listar(Model model) {
         model.addAttribute("productos", productoDaoImp.findAll());
         return "listar";
-    }
+    }/* */
+    @GetMapping("/listar/{id}")
+    public String listar(@PathVariable Long id, Model model) {
+    model.addAttribute("productos", productoDaoImp.findAll());
+    model.addAttribute("clienteId", id); // Pass client ID to view
+    return "listar";
+}
 
     @GetMapping("/form")
     public String crear(Model model) {
