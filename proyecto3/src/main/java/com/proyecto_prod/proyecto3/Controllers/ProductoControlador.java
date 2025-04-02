@@ -111,4 +111,10 @@ public class ProductoControlador {
         flash.addFlashAttribute("success", "Producto eliminado con éxito");
         return "redirect:/producto/listar/" + clienteId;
     }
+
+    @GetMapping("/agregar/{id}")
+    public String agregar(@PathVariable Long id, @RequestParam Long clienteId,Model model, RedirectAttributes flash) {
+        //este metodo agrega el producto a un carrito,lleva al clienteb a la vista Carrito donde va a ver los productos que va a agregado
+        return "Carrito";
+    }
 }

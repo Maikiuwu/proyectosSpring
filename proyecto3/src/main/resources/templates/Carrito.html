@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Tu carrito de compra</title>
+</head>
+<body>
+   mondongo
+   <tr th:each=" carrito : ${carrito}">
+      <td th:text="${carrito.id}"></td>
+        <td th:text="${}"></td>
+      
+   </tr>
+</body>
+</html>

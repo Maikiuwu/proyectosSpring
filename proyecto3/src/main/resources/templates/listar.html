@@ -37,8 +37,9 @@
 
             <td th:if="${!isProveedor}">
                 
-                <a 
-                   onclick="return confirm('¿Seguro que desea comprar?')">Agregar</a><!--@{/producto/agregar/{id}(id=${producto.id}, clienteId=${clienteId})}-->
+                <a th:href="@{/producto/agregar/{id}(id=${producto.id}, clienteId=${clienteId})}"
+                   
+                   >Agregar</a><!--onclick="return confirm('¿Seguro que desea comprar?')"-->
             </td>
 
 
