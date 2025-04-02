@@ -40,13 +40,13 @@ public class ProductoDaoImp implements IProductoDao {
     public void delete(Long id) {
         entityManager.remove(findOne(id));
     }
-    
+
     @Transactional(readOnly = true)
     public List<Producto> findByVendorId(Long vendorId) {
         return entityManager.createQuery(
-            "SELECT p FROM Producto p WHERE p.id_vendedor = :vendorId",
-            Producto.class)
-            .setParameter("vendorId", vendorId)
-            .getResultList();
+                "SELECT p FROM Producto p WHERE p.id_vendedor = :vendorId",
+                Producto.class)
+                .setParameter("vendorId", vendorId)
+                .getResultList();
     }
 }

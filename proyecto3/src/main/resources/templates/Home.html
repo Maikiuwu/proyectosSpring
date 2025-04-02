@@ -12,7 +12,7 @@
         <p th:text="${error}"></p>
     </div>
 
-    <h1>Bienvenido, <span th:text="${cliente.nombre}"></span>!</h1>
+    <h1  >Bienvenido, <span th:text="${cliente.nombre}"></span>!</h1>
     
     <p>Has iniciado sesión correctamente con el ID: <span th:text="${cliente.id}"></span></p>
     
@@ -20,7 +20,7 @@
     <p>URL actual: /cliente/home/<span th:text="${cliente.id}"></span></p>
     
     <!-- Enlaces para navegar a otras partes de la aplicación -->
-    <a th:href="@{/producto/listar/{id}(id=${cliente.id})}">Ver Productos</a>
+    <a th:href="@{/producto/listar/{id}(id=${cliente    .id})}">Ver Productos</a>
     <a th:href="@{/cliente/login}">Cerrar Sesión</a>
 </body>
 </html>
