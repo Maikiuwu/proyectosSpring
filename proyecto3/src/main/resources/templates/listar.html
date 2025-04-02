@@ -15,17 +15,24 @@
     
     <table border="1">
         <tr>
-            <th>ID</th>
+            
             <th>Nombre</th>
-            <th>Precio</th>
-            <th>Acciones</th>
             <th>Nombre vendedor</th>
+            <th>Precio unitario</th> 
             <th>Cantidad</th>
+            <th>Cantidad a comprar</th>
+            <th>Acciones</th>
         </tr>
         <tr th:each="producto : ${productos}">
-            <td th:text="${producto.id}"></td>
+            
             <td th:text="${producto.nombre}"></td>
+            
+            <td th:text="${clientNames.get(producto.id_vendedor)}"></td>
             <td th:text="${producto.precio}"></td>
+            
+            <td th:text="${producto.Cantidad}"></td>
+            
+            <td><label for="">Ingrese cantidad</label> <input type="number"></td>
             <!-- Para proveedores se muestran editar y eliminar -->
             <td th:if="${isProveedor}">
                 <a th:href="@{/producto/editar/{id}(id=${producto.id}, clienteId=${clienteId})}">Editar</a>
@@ -34,11 +41,9 @@
             </td>
             <!-- Para clientes se muestra el botón de agregar al carrito -->
             <td th:if="${!isProveedor}">
-                <a th:href="@{/producto/agregar/{id}(id=${producto.id}, clienteId=${clienteId})}"
-                   onclick="return confirm('¿Seguro que desea agregar al carrito?')">Agregar</a>
+                <a th:href="@{/producto/agregar/{id}(id=${producto.id}, clienteId=${clienteId})}">Agregar</a>
             </td>
-            <td th:text="${clientNames.get(producto.id_vendedor)}"></td>
-            <td th:text="${producto.Cantidad}"></td>
+
         </tr>
     </table>
     

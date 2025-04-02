@@ -12,7 +12,11 @@
                 <tr>
                     <th>ID Producto</th>
                     <th>Nombre</th>
-                    <th>Precio</th>
+                    <th>Precio Unitario</th>
+                    <th>cantidad</th>
+                    <th>Precio total</th>
+                    <th>Opcion</th>
+
                 </tr>
             </thead>
             <tbody>
@@ -20,6 +24,11 @@
                     <td th:text="${producto.id}"></td>
                     <td th:text="${producto.nombre}"></td>
                     <td th:text="${producto.precio}"></td>
+                    <td>cantidad</td>
+                    <td>Precio total</td>
+                    
+
+                    <td><button>eliminar</button></td>
                 </tr>
             </tbody>
         </table>

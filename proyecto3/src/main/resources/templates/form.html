@@ -20,10 +20,11 @@
         </div>
         <!-- Agrega otros campos del producto según tus necesidades -->
         <div>
-            <label for="cantidad">Precio:</label>
+            <label for="cantidad">Cantidad:</label>
             <input type="text" id="cantidad" th:field="*{cantidad}" />
             <div th:if="${#fields.hasErrors('cantidad')}" th:errors="*{cantidad}"></div>
         </div>
+        
         <br/>
         <button type="submit">Guardar</button>
     </form>

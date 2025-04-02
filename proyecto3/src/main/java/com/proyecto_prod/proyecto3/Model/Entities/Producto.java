@@ -35,6 +35,8 @@ public class Producto {
         this.id_vendedor = id_vendedor;
         this.cantidad = cantidad;
     }
+
+    //getters y setters
     public Integer getCantidad() {
         return cantidad;
     }
