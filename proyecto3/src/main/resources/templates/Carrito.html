@@ -1,14 +1,39 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Tu carrito de compra</title>
+    <title>Carrito de Compras</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}" />
 </head>
 <body>
-   mondongo
-   <tr th:each=" carrito : ${carrito}">
-      <td th:text="${carrito.id}"></td>
-        <td th:text="${}"></td>
-      
-   </tr>
+    <h1>Carrito de Compras</h1>
+    <div th:if="${carrito != null and !#lists.isEmpty(carrito)}">
+        <table border="1">
+            <thead>
+                <tr>
+                    <th>ID Producto</th>
+                    <th>Nombre</th>
+                    <th>Precio</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="producto : ${carrito}">
+                    <td th:text="${producto.id}"></td>
+                    <td th:text="${producto.nombre}"></td>
+                    <td th:text="${producto.precio}"></td>
+                </tr>
+            </tbody>
+        </table>
+        <br/>
+        <a th:href="@{/producto/factura(clienteId=${clienteId})}">
+            <button>Finalizar Compra</button>
+        </a>
+    </div>
+    <div th:if="${carrito == null or #lists.isEmpty(carrito)}">
+        <p>No hay productos en el carrito.</p>
+    </div>
+    <br/>
+    <a th:href="@{/producto/listar/{id}(id=${clienteId})}">
+        <button>Continuar Comprando</button>
+    </a>
 </body>
 </html>

@@ -1,83 +1,97 @@
 package com.proyecto_prod.proyecto3.Model.Entities;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-
-import java.sql.Date;
-import jakarta.persistence.Id;
-import jakarta.persistence.Temporal;
-import jakarta.persistence.TemporalType;
-import jakarta.persistence.GenerationType;
+import jakarta.persistence.*;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
-public class Encabezado implements java.io.Serializable {
-
-    private static final long serialVersionUID = 1L;
+@Table(name = "encabezados")
+public class Encabezado {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long Id_compra;
-    Long id_cliente;
-    float descuento_Total;
-    float Total;
-    @Column(name = "fecha")
-    @Temporal(TemporalType.DATE)
-    Date fecha;
+    private Long id;
 
+    // Relación con el cliente que realizó la compra
+    @ManyToOne
+    @JoinColumn(name = "cliente_id", nullable = false)
+    private Cliente cliente;
+
+    // Fecha de emisión de la factura
+    private LocalDate fecha;
+
+    // Total de la factura (se puede calcular a partir de los detalles)
+    private Double total;
+
+    // Relación uno a muchos con los detalles de la factura
+    @OneToMany(mappedBy = "encabezado", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Detalles> detalles = new ArrayList<>();
+
+    // Constructor vacío
     public Encabezado() {
+        this.fecha = LocalDate.now();
     }
 
-    public Encabezado(Long id_compra, Long id_cliente, float descuento_Total, float total, Date fecha) {
-        Id_compra = id_compra;
-        this.id_cliente = id_cliente;
-        this.descuento_Total = descuento_Total;
-        Total = total;
-        this.fecha = fecha;
+    // Getters y Setters
+
+    public Long getId() {
+        return id;
     }
 
-    public static long getSerialversionuid() {
-        return serialVersionUID;
+    public void setId(Long id) {
+        this.id = id;
     }
 
-    public Long getId_compra() {
-        return Id_compra;
+    public Cliente getCliente() {
+        return cliente;
     }
 
-    public void setId_compra(Long id_compra) {
-        Id_compra = id_compra;
+    public void setCliente(Cliente cliente) {
+        this.cliente = cliente;
     }
 
-    public Long getId_cliente() {
-        return id_cliente;
-    }
-
-    public void setId_cliente(Long id_cliente) {
-        this.id_cliente = id_cliente;
-    }
-
-    public float getDescuento_Total() {
-        return descuento_Total;
-    }
-
-    public void setDescuento_Total(float descuento_Total) {
-        this.descuento_Total = descuento_Total;
-    }
-
-    public float getTotal() {
-        return Total;
-    }
-
-    public void setTotal(float total) {
-        Total = total;
-    }
-
-    public Date getFecha() {
+    public LocalDate getFecha() {
         return fecha;
     }
 
-    public void setFecha(Date fecha) {
+    public void setFecha(LocalDate fecha) {
         this.fecha = fecha;
     }
 
+    public Double getTotal() {
+        return total;
+    }
+
+    public void setTotal(Double total) {
+        this.total = total;
+    }
+
+    public List<Detalles> getDetalles() {
+        return detalles;
+    }
+
+    public void setDetalles(List<Detalles> detalles) {
+        this.detalles = detalles;
+    }
+    
+    // Método para agregar un detalle y actualizar el total
+    public void addDetalle(Detalles detalle) {
+        detalle.setEncabezado(this);
+        this.detalles.add(detalle);
+        if(this.total == null){
+            this.total = 0.0;
+        }
+        this.total += detalle.getSubtotal();
+    }
+    
+    // Método para remover un detalle
+    public void removeDetalle(Detalles detalle) {
+        detalle.setEncabezado(null);
+        this.detalles.remove(detalle);
+        if(this.total == null){
+            this.total = 0.0;
+        }
+        this.total -= detalle.getSubtotal();
+    }
 }

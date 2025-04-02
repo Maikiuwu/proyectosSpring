@@ -6,10 +6,9 @@
 <body>
     <h1>Lista de Productos</h1>
     
-    <!-- Only show "New Product" button for providers -->
+    <!-- Botón "Nuevo Producto" solo visible para proveedores -->
     <div th:if="${isProveedor}">
         <a th:href="@{/producto/form/{id}(id=${clienteId})}">Nuevo Producto</a>
-        
     </div>
     
     <p th:text="'Usuario actual: ' + ${clientNames.get(clienteId)} + ' (' + ${rol} + ')'"></p>
@@ -19,30 +18,25 @@
             <th>ID</th>
             <th>Nombre</th>
             <th>Precio</th>
-            <th >Acciones</th> <!--th:if="${isProveedor}"-->
+            <th>Acciones</th>
             <th>Nombre vendedor</th>
             <th>Cantidad</th>
-
         </tr>
         <tr th:each="producto : ${productos}">
             <td th:text="${producto.id}"></td>
             <td th:text="${producto.nombre}"></td>
             <td th:text="${producto.precio}"></td>
-            <!-- Only show edit/delete for providers and only for their products -->
+            <!-- Para proveedores se muestran editar y eliminar -->
             <td th:if="${isProveedor}">
                 <a th:href="@{/producto/editar/{id}(id=${producto.id}, clienteId=${clienteId})}">Editar</a>
-                <a th:href="@{/producto/eliminar/{id}(id=${producto.id}, clienteId=${clienteId})}" 
+                <a th:href="@{/producto/eliminar/{id}(id=${producto.id}, clienteId=${clienteId})}"
                    onclick="return confirm('¿Seguro que desea eliminar?')">Eliminar</a>
             </td>
-
+            <!-- Para clientes se muestra el botón de agregar al carrito -->
             <td th:if="${!isProveedor}">
-                
                 <a th:href="@{/producto/agregar/{id}(id=${producto.id}, clienteId=${clienteId})}"
-                   
-                   >Agregar</a><!--onclick="return confirm('¿Seguro que desea comprar?')"-->
+                   onclick="return confirm('¿Seguro que desea agregar al carrito?')">Agregar</a>
             </td>
-
-
             <td th:text="${clientNames.get(producto.id_vendedor)}"></td>
             <td th:text="${producto.Cantidad}"></td>
         </tr>

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Factura</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}" />
+</head>
+<body>
+    <h1>Factura</h1>
+    <section>
+        <h2>Datos del Cliente</h2>
+        <p><strong>ID:</strong> <span th:text="${cliente.id}"></span></p>
+        <p><strong>Nombre:</strong> <span th:text="${cliente.nombre}"></span></p>
+        <p><strong>Email:</strong> <span th:text="${cliente.email}"></span></p>
+        <!-- Más datos del cliente según corresponda -->
+    </section>
+    <br/>
+    <section>
+        <h2>Detalle de la Compra</h2>
+        <table border="1">
+            <thead>
+                <tr>
+                    <th>ID Producto</th>
+                    <th>Nombre</th>
+                    <th>Cantidad</th>
+                    <th>Precio Unitario</th>
+                    <th>Subtotal</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="detalle : ${encabezado.detalles}">
+                    <td th:text="${detalle.producto.id}"></td>
+                    <td th:text="${detalle.producto.nombre}"></td>
+                    <td th:text="${detalle.cantidad}"></td>
+                    <td th:text="${detalle.precioUnitario}"></td>
+                    <td th:text="${detalle.subtotal}"></td>
+                </tr>
+            </tbody>
+        </table>
+        <p><strong>Total:</strong> <span th:text="${encabezado.total}"></span></p>
+    </section>
+    <br/>
+    <a th:href="@{/producto/listar/{id}(id=${cliente.id})}">
+        <button>Volver a la lista de productos</button>
+    </a>
+</body>
+</html>

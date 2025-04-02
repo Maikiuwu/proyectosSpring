@@ -1,87 +1,94 @@
-package com.proyecto_prod.proyecto3.Model.Entities; 
+package com.proyecto_prod.proyecto3.Model.Entities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 @Entity
-public class Detalles implements java.io.Serializable {
-
-    private static final long serialVersionUID = 1L;
+@Table(name = "detalles")
+public class Detalles {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long Id_detalles;
-    Long Id_encabezado;
-    float descuento;
-    Long id_producto;
-    int cantidad;
-    float subtotal;
+    private Long id;
 
+    // Relación con el producto (suponiendo que ya tienes la entidad Producto definida)
+    @ManyToOne
+    @JoinColumn(name = "producto_id", nullable = false)
+    private Producto producto;
+
+    // Cantidad de productos adquiridos
+    private Integer cantidad;
+
+    // Precio unitario del producto en el momento de la compra
+    private Double precioUnitario;
+
+    // Subtotal = cantidad * precioUnitario
+    private Double subtotal;
+
+    // Relación con el encabezado de la factura
+    @ManyToOne
+    @JoinColumn(name = "encabezado_id")
+    private Encabezado encabezado;
+
+    // Constructor vacío
     public Detalles() {
     }
 
-    public Detalles(Long id_detalles, Long id_encabezado, float descuento, Long id_producto, int cantidad,
-            float subtotal) {
-        Id_detalles = id_detalles;
-        Id_encabezado = id_encabezado;
-        this.descuento = descuento;
-        this.id_producto = id_producto;
-        this.cantidad = cantidad;
-        this.subtotal = subtotal;
+    // Getters y Setters
+
+    public Long getId() {
+        return id;
     }
 
-    public static long getSerialversionuid() {
-        return serialVersionUID;
+    public void setId(Long id) {
+        this.id = id;
     }
 
-    public Long getId_detalles() {
-        return Id_detalles;
+    public Producto getProducto() {
+        return producto;
     }
 
-    public void setId_detalles(Long id_detalles) {
-        Id_detalles = id_detalles;
+    public void setProducto(Producto producto) {
+        this.producto = producto;
     }
 
-    public Long getId_encabezado() {
-        return Id_encabezado;
-    }
-
-    public void setId_encabezado(Long id_encabezado) {
-        Id_encabezado = id_encabezado;
-    }
-
-    public float getDescuento() {
-        return descuento;
-    }
-
-    public void setDescuento(float descuento) {
-        this.descuento = descuento;
-    }
-
-    public Long getId_producto() {
-        return id_producto;
-    }
-
-    public void setId_producto(Long id_producto) {
-        this.id_producto = id_producto;
-    }
-
-    public int getCantidad() {
+    public Integer getCantidad() {
         return cantidad;
     }
 
-    public void setCantidad(int cantidad) {
+    public void setCantidad(Integer cantidad) {
         this.cantidad = cantidad;
+        calcularSubtotal();
     }
 
-    public float getSubtotal() {
+    public Double getPrecioUnitario() {
+        return precioUnitario;
+    }
+
+    public void setPrecioUnitario(Double precioUnitario) {
+        this.precioUnitario = precioUnitario;
+        calcularSubtotal();
+    }
+
+    public Double getSubtotal() {
         return subtotal;
     }
 
-    public void setSubtotal(float subtotal) {
+    public void setSubtotal(Double subtotal) {
         this.subtotal = subtotal;
     }
 
+    public Encabezado getEncabezado() {
+        return encabezado;
+    }
+
+    public void setEncabezado(Encabezado encabezado) {
+        this.encabezado = encabezado;
+    }
+    
+    // Método para calcular el subtotal automáticamente
+    private void calcularSubtotal() {
+        if (this.cantidad != null && this.precioUnitario != null) {
+            this.subtotal = this.cantidad * this.precioUnitario;
+        }
+    }
 }
