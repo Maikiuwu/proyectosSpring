@@ -67,7 +67,6 @@ public class ClienteController {
             return "redirect:/cliente/registro";
         }
     }
-
     @GetMapping("/home/{id}")
     public String home(@PathVariable Long id, Model model, RedirectAttributes flash) {
         Cliente cliente = clienteDao.findOne(id);
@@ -76,7 +75,6 @@ public class ClienteController {
             return "redirect:/cliente/login";
         }
         model.addAttribute("cliente", cliente);
-        // Aquí estamos usando una plantilla llamada "home" que mostrará los datos del cliente
-        return "home";
+        return "Home"; // Cambiado de "home" a "Home"
     }
 }
