@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Confirmar Edición</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}" />
+</head>
+<body>
+    <h1>Producto Existente</h1>
+    
+    <div class="alert alert-warning">
+        <p>Ya existe un producto con el nombre "<span th:text="${productoExistente.nombre}"></span>" en su inventario.</p>
+        <p>¿Desea actualizar el producto existente con los nuevos datos?</p>
+    </div>
+    
+    <h2>Datos del producto existente:</h2>
+    <table border="1">
+        <tr>
+            <th>Nombre</th>
+            <td th:text="${productoExistente.nombre}"></td>
+        </tr>
+        <tr>
+            <th>Precio</th>
+            <td th:text="${productoExistente.precio}"></td>
+        </tr>
+        <tr>
+            <th>Cantidad</th>
+            <td th:text="${productoExistente.cantidad}"></td>
+        </tr>
+    </table>
+    
+    <h2>Nuevos datos:</h2>
+    <table border="1">
+        <tr>
+            <th>Nombre</th>
+            <td th:text="${nuevoProducto.nombre}"></td>
+        </tr>
+        <tr>
+            <th>Precio</th>
+            <td th:text="${nuevoProducto.precio}"></td>
+        </tr>
+        <tr>
+            <th>Cantidad</th>
+            <td th:text="${nuevoProducto.cantidad}"></td>
+        </tr>
+    </table>
+    
+    <div style="margin-top: 20px;">
+        <form th:action="@{/producto/confirmar-edicion}" method="post">
+            <input type="hidden" name="productoId" th:value="${productoExistente.id}" />
+            <input type="hidden" name="clienteId" th:value="${clienteId}" />
+            <input type="hidden" name="nombre" th:value="${nuevoProducto.nombre}" />
+            <input type="hidden" name="precio" th:value="${nuevoProducto.precio}" />
+            <input type="hidden" name="cantidad" th:value="${nuevoProducto.cantidad}" />
+            <button type="submit">Sí, actualizar el producto existente</button>
+        </form>
+        <a th:href="@{/producto/listar/{id}(id=${clienteId})}" style="margin-top: 10px; display: inline-block;">
+            <button>No, cancelar</button>
+        </a>
+    </div>
+</body>
+</html>

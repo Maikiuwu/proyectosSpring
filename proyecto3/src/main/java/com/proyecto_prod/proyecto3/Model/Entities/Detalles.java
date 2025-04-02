@@ -34,7 +34,6 @@ public class Detalles {
     }
 
     // Getters y Setters
-
     public Long getId() {
         return id;
     }
@@ -57,7 +56,6 @@ public class Detalles {
 
     public void setCantidad(Integer cantidad) {
         this.cantidad = cantidad;
-        calcularSubtotal();
     }
 
     public Double getPrecioUnitario() {
@@ -66,7 +64,6 @@ public class Detalles {
 
     public void setPrecioUnitario(Double precioUnitario) {
         this.precioUnitario = precioUnitario;
-        calcularSubtotal();
     }
 
     public Double getSubtotal() {
@@ -84,11 +81,9 @@ public class Detalles {
     public void setEncabezado(Encabezado encabezado) {
         this.encabezado = encabezado;
     }
-    
-    // Método para calcular el subtotal automáticamente
-    private void calcularSubtotal() {
-        if (this.cantidad != null && this.precioUnitario != null) {
-            this.subtotal = this.cantidad * this.precioUnitario;
-        }
+
+    // Método para calcular subtotal
+    public void calcularSubtotal() {
+        this.subtotal = this.cantidad * this.precioUnitario;
     }
 }

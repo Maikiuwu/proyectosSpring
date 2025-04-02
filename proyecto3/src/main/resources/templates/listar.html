@@ -2,54 +2,64 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Lista de Productos</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}" />
 </head>
 <body>
     <h1>Lista de Productos</h1>
     
     <!-- Botón "Nuevo Producto" solo visible para proveedores -->
     <div th:if="${isProveedor}">
-        <a th:href="@{/producto/form/{id}(id=${clienteId})}">Nuevo Producto</a>
+        <a th:href="@{/producto/form/{id}(id=${clienteId})}" >Nuevo Producto</a>
     </div>
     
     <p th:text="'Usuario actual: ' + ${clientNames.get(clienteId)} + ' (' + ${rol} + ')'"></p>
     
     <table border="1">
         <tr>
-            
             <th>Nombre</th>
             <th>Nombre vendedor</th>
-            <th>Precio unitario</th> 
+            <th>Precio Unitario</th>
             <th>Cantidad</th>
-            <th>Cantidad a comprar</th>
+            <!-- Columna "Cantidad a comprar" solo visible para clientes -->
+            <th th:if="${!isProveedor}">Cantidad a comprar</th>
             <th>Acciones</th>
         </tr>
         <tr th:each="producto : ${productos}">
-            
             <td th:text="${producto.nombre}"></td>
-            
             <td th:text="${clientNames.get(producto.id_vendedor)}"></td>
             <td th:text="${producto.precio}"></td>
-            
-            <td th:text="${producto.Cantidad}"></td>
-            
-            <td><label for="">Ingrese cantidad</label> <input type="number"></td>
-            <!-- Para proveedores se muestran editar y eliminar -->
+            <td th:text="${producto.cantidad}"></td>
+            <!-- Columna de formulario de cantidad solo visible para clientes -->
+            <td th:if="${!isProveedor}">
+                <form th:action="@{/producto/agregar/{id}(id=${producto.id})}" method="post">
+                    <input type="hidden" name="clienteId" th:value="${clienteId}">
+                    <label for="cantidad_ingresada">Ingrese cantidad</label>
+                    <input name="cantidad_ingresada" type="number" min="1" th:max="${producto.cantidad}" value="1" required>
+                    <button type="submit" th:disabled="${producto.cantidad <= 0}">Agregar</button>
+                </form>
+            </td>
             <td th:if="${isProveedor}">
                 <a th:href="@{/producto/editar/{id}(id=${producto.id}, clienteId=${clienteId})}">Editar</a>
-                <a th:href="@{/producto/eliminar/{id}(id=${producto.id}, clienteId=${clienteId})}"
+                <a th:href="@{/producto/eliminar/{id}(id=${producto.id}, clienteId=${clienteId})}" 
                    onclick="return confirm('¿Seguro que desea eliminar?')">Eliminar</a>
             </td>
-            <!-- Para clientes se muestra el botón de agregar al carrito -->
             <td th:if="${!isProveedor}">
-                <a th:href="@{/producto/agregar/{id}(id=${producto.id}, clienteId=${clienteId})}">Agregar</a>
+                <!-- Para clientes se muestra el estado de disponibilidad -->
+                <button th:disabled="${producto.cantidad <= 0}" 
+                        th:text="${producto.cantidad <= 0 ? 'Sin stock' : 'Disponible'}">
+                </button>
             </td>
-
         </tr>
     </table>
     
     <div th:if="${success != null}" th:text="${success}" style="color: green; font-weight: bold;"></div>
     <div th:if="${error != null}" th:text="${error}" style="color: red; font-weight: bold;"></div>
     
+    <br>
+
     <a th:href="@{/}">Volver al inicio</a>
+    <a th:href="@{/producto/listar/{id}(id=${clienteId})}">Recargar</a>
+    <!-- Botón de carrito solo visible para clientes -->
+    <a th:if="${!isProveedor}" th:href="@{/producto/carrito(clienteId=${clienteId})}">Ver Carrito</a>
 </body>
 </html>

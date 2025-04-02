@@ -6,6 +6,7 @@
 </head>
 <body>
     <h1>Carrito de Compras</h1>
+    
     <div th:if="${carrito != null and !#lists.isEmpty(carrito)}">
         <table border="1">
             <thead>
@@ -13,36 +14,48 @@
                     <th>ID Producto</th>
                     <th>Nombre</th>
                     <th>Precio Unitario</th>
-                    <th>cantidad</th>
+                    <th>Cantidad</th>
                     <th>Precio total</th>
-                    <th>Opcion</th>
-
+                    <th>Opción</th>
                 </tr>
             </thead>
             <tbody>
-                <tr th:each="producto : ${carrito}">
-                    <td th:text="${producto.id}"></td>
-                    <td th:text="${producto.nombre}"></td>
-                    <td th:text="${producto.precio}"></td>
-                    <td>cantidad</td>
-                    <td>Precio total</td>
-                    
-
-                    <td><button>eliminar</button></td>
+                <tr th:each="detalle, stat : ${carrito}">
+                    <td th:text="${detalle.producto.id}"></td>
+                    <td th:text="${detalle.producto.nombre}"></td>
+                    <td th:text="${detalle.precioUnitario}"></td>
+                    <td th:text="${detalle.cantidad}"></td>
+                    <td th:text="${detalle.subtotal}"></td>
+                    <td>
+                        <a th:href="@{/producto/eliminarDelCarrito/{index}(index=${stat.index}, clienteId=${clienteId})}" 
+                           onclick="return confirm('¿Seguro que desea eliminar este producto del carrito?')">
+                            <button>Eliminar</button>
+                        </a>
+                    </td>
                 </tr>
             </tbody>
         </table>
+        <br/>
+        <div>
+            <strong>Total de la compra: </strong>
+            <span th:text="${totalCompra}"></span>
+        </div>
         <br/>
         <a th:href="@{/producto/factura(clienteId=${clienteId})}">
             <button>Finalizar Compra</button>
         </a>
     </div>
+    
     <div th:if="${carrito == null or #lists.isEmpty(carrito)}">
         <p>No hay productos en el carrito.</p>
     </div>
+    
     <br/>
     <a th:href="@{/producto/listar/{id}(id=${clienteId})}">
         <button>Continuar Comprando</button>
     </a>
+    
+    <div th:if="${success != null}" th:text="${success}" style="color: green; font-weight: bold;"></div>
+    <div th:if="${error != null}" th:text="${error}" style="color: red; font-weight: bold;"></div>
 </body>
 </html>
