@@ -9,14 +9,21 @@ import com.proyecto_prod.proyecto3.Model.Entities.Producto;
 import com.proyecto_prod.proyecto3.Model.Entities.Cliente;
 import com.proyecto_prod.proyecto3.Model.Entities.Detalles;
 import com.proyecto_prod.proyecto3.Model.Entities.Encabezado;
+import com.proyecto_prod.proyecto3.Service.PdfGeneratorService;
 
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import com.proyecto_prod.proyecto3.Model.Dao.ProductoDaoImp;
 import com.proyecto_prod.proyecto3.Model.Dao.ClienteDaoImp;
+import com.proyecto_prod.proyecto3.Model.Dao.EncabezadoDaoImp;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -30,6 +37,12 @@ public class ProductoControlador {
     
     @Autowired
     private ClienteDaoImp clienteDaoImp;
+    
+    @Autowired
+    private EncabezadoDaoImp encabezadoDaoImp;
+    
+    @Autowired
+    private PdfGeneratorService pdfGeneratorService;
     
     // Estructura en memoria para almacenar carritos por cliente
     private Map<Long, List<Detalles>> carritoMap = new HashMap<>();
@@ -337,8 +350,8 @@ public class ProductoControlador {
         }
         encabezado.setTotal(total);
         
-        // Aquí podrías guardar el encabezado (y en cascada, los detalles) en la BD
-        // encabezadoDaoImp.save(encabezado);
+        // Guardar el encabezado (y en cascada, los detalles) en la BD
+        encabezadoDaoImp.save(encabezado);
         
         // Se limpia el carrito
         carritoMap.remove(clienteId);
@@ -347,5 +360,27 @@ public class ProductoControlador {
         model.addAttribute("cliente", cliente);
         model.addAttribute("encabezado", encabezado);
         return "Factura";
+    }
+    
+    // Método para generar el PDF de la factura
+    @GetMapping("/exportPDF/{id}")
+    public void generarPDF(@PathVariable Long id, HttpServletResponse response) throws IOException {
+        // Buscar el encabezado de la factura por su ID
+        Encabezado encabezado = encabezadoDaoImp.findOne(id);
+        if (encabezado == null) {
+            return; // Manejar error
+        }
+        
+        // Configurar la respuesta HTTP para descargar un PDF
+        response.setContentType("application/pdf");
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
+        String currentDateTime = dateFormat.format(new Date());
+        
+        String headerKey = "Content-Disposition";
+        String headerValue = "attachment; filename=factura_" + encabezado.getId() + "_" + currentDateTime + ".pdf";
+        response.setHeader(headerKey, headerValue);
+        
+        // Generar el PDF utilizando el servicio
+        pdfGeneratorService.generateInvoicePDF(encabezado, response);
     }
 }
